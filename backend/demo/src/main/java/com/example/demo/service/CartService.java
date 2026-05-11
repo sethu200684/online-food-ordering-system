@@ -9,10 +9,13 @@ import com.example.demo.repository.CartItemRepository;
 import com.example.demo.repository.FoodItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class CartService {
+
+    private static final Logger log = LoggerFactory.getLogger(CartService.class);
 
     @Autowired
     private CartRepository cartRepository;
@@ -24,11 +27,13 @@ public class CartService {
     private FoodItemRepository foodItemRepository;
 
     public Cart getCartByUserId(Long userId) {
+        log.info("Fetching cart for user id: {}", userId);
         return cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
     }
 
     public Cart addItemToCart(Long userId, Long foodItemId, Integer quantity) {
+        log.info("Adding food item id: {} to cart for user id: {}", foodItemId, userId);
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
 
@@ -45,6 +50,7 @@ public class CartService {
     }
 
     public void removeItemFromCart(Long cartItemId) {
+        log.info("Removing cart item with id: {}", cartItemId);
         cartItemRepository.deleteById(cartItemId);
     }
 }
