@@ -21,6 +21,7 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
+    // Generates a JWT token for the given email
     public String generateToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
@@ -30,6 +31,7 @@ public class JwtUtil {
                 .compact();
     }
 
+    // Extracts email from a given JWT token
     public String extractEmail(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
@@ -39,6 +41,7 @@ public class JwtUtil {
                 .getSubject();
     }
 
+    // Validates the JWT token
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()

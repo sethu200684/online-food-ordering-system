@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
 
+// Represents a payment linked to an order
+
 @Entity
 @Table(name = "payments")
 @Data

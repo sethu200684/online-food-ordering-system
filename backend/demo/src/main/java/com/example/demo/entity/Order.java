@@ -5,6 +5,8 @@ import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.List;
 
+// Represents a placed order
+
 @Entity
 @Table(name = "orders")
 @Data

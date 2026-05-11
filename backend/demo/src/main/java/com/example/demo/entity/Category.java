@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
 
+// Represents a food category. One category has many food items
+
 @Entity
 @Table(name = "categories")
 @Data

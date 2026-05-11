@@ -33,6 +33,7 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    // Endpoint for user registration
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody SignUpRequest request) {
         log.info("Sign up request received for email: {}", request.getEmail());
@@ -52,6 +53,7 @@ public class AuthController {
         return ResponseEntity.ok("User registered successfully");
     }
 
+    // Endpoint for user login — returns JWT token on success
     @PostMapping("/signin")
     public ResponseEntity<?> signIn(@RequestBody SignInRequest request) {
         log.info("Sign in request received for email: {}", request.getEmail());

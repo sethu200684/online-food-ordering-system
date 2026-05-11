@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
 
+// Represents a shopping cart. Each user has one cart
+
 @Entity
 @Table(name = "carts")
 @Data

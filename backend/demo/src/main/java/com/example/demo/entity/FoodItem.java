@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
+// Represents a food item. Belongs to one category
+
 @Entity
 @Table(name = "food_items")
 @Data

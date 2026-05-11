@@ -3,6 +3,8 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+// Represents an item inside a cart
+
 @Entity
 @Table(name = "cart_items")
 @Data

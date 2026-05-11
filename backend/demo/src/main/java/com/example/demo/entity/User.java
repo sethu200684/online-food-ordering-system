@@ -4,6 +4,11 @@ import jakarta.persistence.*;
 import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Represents a user in the system.
+ * Users can have roles: ADMIN or CUSTOMER
+ */
+
 @Entity
 @Table(name = "users")
 @Data
