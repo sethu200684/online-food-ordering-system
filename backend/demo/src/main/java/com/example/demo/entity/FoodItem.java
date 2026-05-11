@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,9 +17,7 @@ public class FoodItem {
     private String name;
 
     private String description;
-
     private Double price;
-
     private String imageUrl;
 
     @Enumerated(EnumType.STRING)
@@ -26,6 +25,7 @@ public class FoodItem {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @JsonIgnoreProperties("foodItems")
     private Category category;
 
     public enum Status {
