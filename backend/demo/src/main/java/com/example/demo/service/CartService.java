@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.entity.Cart;
 import com.example.demo.entity.CartItem;
 import com.example.demo.entity.FoodItem;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.CartRepository;
 import com.example.demo.repository.CartItemRepository;
 import com.example.demo.repository.FoodItemRepository;
@@ -24,15 +25,15 @@ public class CartService {
 
     public Cart getCartByUserId(Long userId) {
         return cartRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Cart not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
     }
 
     public Cart addItemToCart(Long userId, Long foodItemId, Integer quantity) {
         Cart cart = cartRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Cart not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
 
         FoodItem foodItem = foodItemRepository.findById(foodItemId)
-                .orElseThrow(() -> new RuntimeException("Food item not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Food item not found"));
 
         CartItem cartItem = new CartItem();
         cartItem.setCart(cart);

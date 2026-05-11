@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Order;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class OrderService {
 
     public Order updateOrderStatus(Long id, Order.Status status) {
         Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
         order.setStatus(status);
         return orderRepository.save(order);
     }
