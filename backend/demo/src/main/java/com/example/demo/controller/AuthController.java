@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.example.demo.entity.Cart;
+import com.example.demo.repository.CartRepository;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -29,6 +31,9 @@ public class AuthController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private CartRepository cartRepository;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -48,6 +53,10 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(User.Role.CUSTOMER);
         userRepository.save(user);
+        
+        Cart cart = new Cart();
+        cart.setUser(user);
+        cartRepository.save(cart);
 
         log.info("User registered successfully: {}", request.getEmail());
         return ResponseEntity.ok("User registered successfully");

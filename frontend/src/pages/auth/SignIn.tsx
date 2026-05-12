@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { signIn } from '../../api/authApi';
 import { useAuth } from '../../context/AuthContext';
+import api from '../../api/axios';
 
 const SignIn: React.FC = () => {
   const navigate = useNavigate();
@@ -38,17 +39,25 @@ const SignIn: React.FC = () => {
     setError('');
 
     try {
-      const response = await signIn(formData);
-      const { token, role } = response.data;
+  const response = await signIn(formData);
+  const { token, role } = response.data;
 
-      // get user id from backend
-      login(token, role, 0);
-      navigate('/');
-    } catch (err: any) {
-      setError('Invalid email or password');
-    } finally {
-      setLoading(false);
-    }
+  try {
+    
+    const userResponse = await api.get('/users/me', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    login(token, role, userResponse.data.id);
+  } catch (userErr) {
+    console.error('Could not fetch user:', userErr);
+    login(token, role, 0);
+  }
+
+  navigate('/');
+} catch (err: any) {
+  console.error('Sign in error:', err);
+  setError(err.response?.data?.message || 'Invalid email or password');
+}
   };
 
   return (

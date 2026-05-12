@@ -1,9 +1,8 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
-
-// Represents an item inside a cart
 
 @Entity
 @Table(name = "cart_items")
@@ -18,9 +17,11 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name = "cart_id")
+    @JsonIgnoreProperties("cartItems")
     private Cart cart;
 
     @ManyToOne
     @JoinColumn(name = "food_item_id")
+    @JsonIgnoreProperties("category")
     private FoodItem foodItem;
 }
