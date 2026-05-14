@@ -178,3 +178,7 @@ This API uses JWT authentication. To access protected endpoints:
 - **Order** — Status: PLACED, PREPARING, DELIVERED, CANCELLED
 - **Order Item** — Many-to-One with Order and Food Item
 - **Payment** — Status: PENDING, COMPLETED, FAILED
+
+## Default Admin Credentials
+- Email: `admin@example.com`
+- Password: `admin123`
