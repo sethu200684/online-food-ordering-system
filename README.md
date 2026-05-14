@@ -1,28 +1,54 @@
-# Online Food Ordering System - Backend
+# Online Food Ordering System
 
-A RESTful backend API for an Online Food Ordering platform built with Spring Boot and MySQL.
+A full-stack Online Food Ordering platform built with Spring Boot (backend) and React TypeScript (frontend).
 
 ## Tech Stack
+
+### Backend
 - Java 21
 - Spring Boot 4.0.6
 - Spring Data JPA
-- Spring Security
-- JWT Authentication
+- Spring Security + JWT
 - MySQL 8.0
 - Maven
 - Lombok
 
-## Project Structure
-src/main/java/com/example/demo/
-├── controller/      # REST API endpoints
-├── service/         # Business logic
-├── repository/      # Database operations
-├── entity/          # Database models
-├── security/        # JWT authentication
-├── exception/       # Exception handling
-└── dto/             # Request/Response objects
+### Frontend
+- React 18 (TypeScript)
+- React Router
+- Axios
+- Tailwind CSS
+- Context API
 
-## Setup Instructions
+## Project Structure
+online-food-ordering-system/
+├── backend/
+│   └── demo/
+│       └── src/main/java/com/example/demo/
+│           ├── controller/
+│           ├── service/
+│           ├── repository/
+│           ├── entity/
+│           ├── security/
+│           ├── exception/
+│           ├── config/
+│           └── dto/
+└── frontend/
+└── src/
+├── api/
+├── components/
+├── context/
+├── pages/
+│   ├── auth/
+│   ├── food/
+│   ├── cart/
+│   ├── order/
+│   ├── admin/
+│   └── user/
+├── types/
+└── utils/
+
+## Backend Setup
 
 ### Prerequisites
 - Java 21
@@ -35,20 +61,36 @@ CREATE DATABASE online_food_db;
 ```
 
 ### Configure Application
-Update `src/main/resources/application.properties`:
+Update `backend/demo/src/main/resources/application.properties`:
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/online_food_db
 spring.datasource.username=your_username
 spring.datasource.password=your_password
 app.jwt.secret=your_secret_key
 app.jwt.expiration=86400000
+server.port=8081
 ```
 
-### Run the Application
+### Run Backend
 ```bash
+cd backend/demo
 ./mvnw spring-boot:run
 ```
-App runs on `http://localhost:8081`
+Backend runs on `http://localhost:8081`
+
+## Frontend Setup
+
+### Prerequisites
+- Node.js
+- npm
+
+### Install and Run
+```bash
+cd frontend
+npm install
+npm start
+```
+Frontend runs on `http://localhost:3000`
 
 ## API Endpoints
 
@@ -101,6 +143,7 @@ App runs on `http://localhost:8081`
 |--------|----------|-------------|
 | GET | /api/users | Get all users |
 | GET | /api/users/{id} | Get user by ID |
+| GET | /api/users/me | Get current user |
 | DELETE | /api/users/{id} | Delete user |
 
 ## Authentication
@@ -109,6 +152,22 @@ This API uses JWT authentication. To access protected endpoints:
 1. Register via `/api/auth/signup`
 2. Login via `/api/auth/signin` to get your token
 3. Add token to request header:
+
+## Features
+
+### Customer
+- Browse food menu with category filter
+- Add items to cart
+- Update cart item quantities
+- Place orders and process payments
+- View order history
+- View user profile
+
+### Admin
+- Manage users
+- Manage food items
+- Manage categories
+- Manage and update order statuses
 
 ## Entities
 - **User** — Roles: ADMIN, CUSTOMER

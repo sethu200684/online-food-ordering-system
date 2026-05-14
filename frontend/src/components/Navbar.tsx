@@ -32,6 +32,10 @@ const Navbar: React.FC = () => {
           My Orders
         </Link>
 
+        <Link to="/profile" className="hover:text-orange-200 transition">
+          Profile
+        </Link>
+
         {/* admin only link */}
         {role === 'ADMIN' && (
           <Link to="/admin" className="hover:text-orange-200 transition">

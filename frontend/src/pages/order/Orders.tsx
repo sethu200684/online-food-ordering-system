@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getOrdersByUser } from '../../api/orderApi';
 import { Order } from '../../types';
 import { useAuth } from '../../context/AuthContext';
+import PaymentStatus from '../../components/PaymentStatus';
 
 const Orders: React.FC = () => {
   const { userId } = useAuth();
@@ -25,6 +26,7 @@ const Orders: React.FC = () => {
   };
 
   const getStatusColor = (status: string) => {
+    
     switch (status) {
       case 'PLACED': return 'bg-blue-100 text-blue-600';
       case 'PREPARING': return 'bg-yellow-100 text-yellow-600';
@@ -77,7 +79,9 @@ const Orders: React.FC = () => {
               <div className="text-gray-500 text-sm mb-3">
                 <p>Date: {new Date(order.orderDate).toLocaleDateString()}</p>
               </div>
-
+              
+              <PaymentStatus status="COMPLETED" amount={order.totalAmount} />
+              
               <div className="flex justify-between items-center border-t pt-3">
                 <span className="text-gray-700 font-medium">Total Amount:</span>
                 <span className="text-orange-500 font-bold text-lg">

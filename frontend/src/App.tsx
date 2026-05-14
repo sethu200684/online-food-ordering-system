@@ -8,6 +8,7 @@ import Cart from './pages/cart/Cart';
 import Orders from './pages/order/Orders';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import Navbar from './components/Navbar';
+import UserProfile from './pages/user/UserProfile';
 
 // protected route for logged in users
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -38,6 +39,11 @@ function App() {
         <Route path="/cart" element={
           <ProtectedRoute>
             <Cart />
+          </ProtectedRoute>
+        } />
+        <Route path="/profile" element={
+          <ProtectedRoute>
+            <UserProfile />
           </ProtectedRoute>
         } />
         <Route path="/orders" element={

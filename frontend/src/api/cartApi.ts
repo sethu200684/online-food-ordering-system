@@ -9,3 +9,4 @@ export const addToCart = (userId: number, foodItemId: number, quantity: number) 
 
 export const removeFromCart = (cartItemId: number) =>
   api.delete(`/cart/item/${cartItemId}`);
+

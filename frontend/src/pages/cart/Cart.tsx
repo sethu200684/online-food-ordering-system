@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getCart, removeFromCart } from '../../api/cartApi';
+import { getCart, removeFromCart, addToCart } from '../../api/cartApi';
 import { placeOrder } from '../../api/orderApi';
 import { processPayment } from '../../api/paymentApi';
 import { Cart as CartType, CartItem } from '../../types';
@@ -20,16 +20,33 @@ const Cart: React.FC = () => {
   }, [userId]);
 
   const fetchCart = async () => {
-    console.log('Fetching cart for userId:', userId);
     try {
       const response = await getCart(userId!);
-      console.log('Cart response:', response.data);
       setCart(response.data);
     } catch (err) {
-      console.error('Cart error:', err);
       setError('Failed to load cart');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleUpdateQuantity = async (
+    cartItemId: number,
+    currentQuantity: number,
+    change: number
+  ) => {
+    const newQuantity = currentQuantity + change;
+    if (newQuantity < 1) {
+      handleRemove(cartItemId);
+      return;
+    }
+    try {
+      const foodItem = cart!.cartItems.find(i => i.id === cartItemId)!.foodItem;
+      await removeFromCart(cartItemId);
+      await addToCart(userId!, foodItem.id, newQuantity);
+      fetchCart();
+    } catch (err) {
+      setError('Failed to update quantity');
     }
   };
 
@@ -58,7 +75,6 @@ const Cart: React.FC = () => {
 
     setOrdering(true);
     try {
-      // place order
       const orderResponse = await placeOrder({
         totalAmount: getTotalAmount(),
         user: { id: userId! },
@@ -66,7 +82,6 @@ const Cart: React.FC = () => {
 
       const orderId = orderResponse.data.id;
 
-      // process payment
       await processPayment({
         amount: getTotalAmount(),
         order: { id: orderId },
@@ -120,7 +135,6 @@ const Cart: React.FC = () => {
         </div>
       ) : (
         <div className="max-w-2xl mx-auto">
-          {/* cart items */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6">
             {cart.cartItems.map((item: CartItem) => (
               <div
@@ -128,18 +142,35 @@ const Cart: React.FC = () => {
                 className="flex justify-between items-center p-4 border-b last:border-0"
               >
                 <div>
-                  <h3 className="font-bold text-gray-800">
-                    {item.foodItem.name}
-                  </h3>
+                  <h3 className="font-bold text-gray-800">{item.foodItem.name}</h3>
                   <p className="text-gray-500 text-sm">
-                    Qty: {item.quantity} × ${item.foodItem.price?.toFixed(2)}
+                    ${item.foodItem.price?.toFixed(2)} each
                   </p>
                 </div>
 
                 <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => handleUpdateQuantity(item.id, item.quantity, -1)}
+                      className="w-8 h-8 rounded-full bg-orange-100 text-orange-600 hover:bg-orange-200 transition font-bold"
+                    >
+                      -
+                    </button>
+                    <span className="font-bold text-gray-800 w-6 text-center">
+                      {item.quantity}
+                    </span>
+                    <button
+                      onClick={() => handleUpdateQuantity(item.id, item.quantity, 1)}
+                      className="w-8 h-8 rounded-full bg-orange-100 text-orange-600 hover:bg-orange-200 transition font-bold"
+                    >
+                      +
+                    </button>
+                  </div>
+
                   <p className="text-orange-500 font-bold">
                     ${(item.foodItem.price * item.quantity).toFixed(2)}
                   </p>
+
                   <button
                     onClick={() => handleRemove(item.id)}
                     className="text-red-500 hover:text-red-700 transition"
@@ -151,7 +182,6 @@ const Cart: React.FC = () => {
             ))}
           </div>
 
-          {/* total and order button */}
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex justify-between items-center mb-4">
               <span className="text-gray-700 font-bold text-lg">Total:</span>
